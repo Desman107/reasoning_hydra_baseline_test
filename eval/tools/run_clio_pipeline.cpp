@@ -266,11 +266,11 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
 
     if ((idx + 1) % 100 == 0 || idx == frames.size() - 1) {
       LOG(INFO) << "Processed " << (idx + 1) << "/" << frames.size()
-                << " frames, map has " << map.numBlocks() << " blocks";
+                << " frames, map has " << map.getTsdfLayer().numBlocks() << " blocks";
     }
   }
 
-  LOG(INFO) << "TSDF integration complete. Map has " << map.numBlocks() << " blocks";
+  LOG(INFO) << "TSDF integration complete. Map has " << map.getTsdfLayer().numBlocks() << " blocks";
 
   // 6. Save VolumetricMap
   std::string map_path = output_dir + "/tsdf_map";

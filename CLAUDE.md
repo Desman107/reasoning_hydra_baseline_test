@@ -1,6 +1,6 @@
 # CLAUDE.md — reasoning_hydra + Clio 数据集 工作指南
 
-> 最后更新: 2026-05-09 | 状态: 阶段 A 完成, 阶段 B 配置创建完成, 进入阶段 C
+> 最后更新: 2026-05-09 (day end) | 状态: 阶段 A+B 完成, 阶段 C 进行中 (standalone runner 编写中)
 
 ---
 
@@ -237,8 +237,8 @@ Clio 图像 640x480，需要 fx, fy, cx, cy。目前未知。
 
 | 步骤 | 任务 | 状态 | 备注 |
 |------|------|------|------|
-| C1 | 编写 `run_clio_pipeline` standalone C++ 工具 | 🔴 进行中 | TSDF 重建 + Frontend(places/objects) + Rooms |
-| C2 | 构建并修复编译错误 | ⬜ 待开始 | |
+| C1 | 编写 `run_clio_pipeline` standalone C++ 工具 | 🔴 进行中 | 已创建 eval/tools/run_clio_pipeline.cpp + CMakeLists 更新，编译有 5 个错误待修复 |
+| C2 | 修复编译错误并成功构建 | ⬜ 待开始 | |
 | C3 | 在 cubicle 上测试 | ⬜ 待开始 | 先小场景快速验证 |
 
 ### 阶段 D: 场景图构建
@@ -312,6 +312,7 @@ semantic_inference_python, spark_dsg, spatial_hash, teaserpp
 | 2026-05-08 | 从 cubicle (640帧) 开始测试 | 最小场景，快速迭代 |
 | 2026-05-08 | 以 replica 配置为模板创建 clio 配置 | 两者均为室内场景，参数最接近 |
 | 2026-05-08 | CLAUDE.md 作为唯一工作指南和进度文件 | 统一信息来源，避免状态分散 |
+| 2026-05-09 | 采用 standalone offline pipeline (BatchPipeline + VolumetricMap) | hydra_ros 无法编译 (vision_msgs 无 conda py39 构建)，离线方案更直接可控 |
 
 ---
 
@@ -333,34 +334,52 @@ config/label_spaces/
 └── clio_label_space.yaml            # 新建标签空间
 ```
 
+### 新增 standalone 工具 (本项目内):
+
+```
+eval/tools/
+└── run_clio_pipeline.cpp             # Clio 离线 pipeline 入口 (TSDF 重建 + BatchPipeline + DSG 输出)
+```
+
 ### 外部仓库 (reasoning_hydra_ros):
 
 ```
 launch/
-└── clio.launch                      # Clio 启动文件
+└── clio.launch                      # Clio 启动文件 (暂不需要，采用离线方案)
 
 src/
-└── clio_data_publisher.cpp          # Clio 数据发布节点 (读取文件 → 发布 ROS topics)
+└── clio_data_publisher.cpp          # Clio 数据发布节点 (暂不需要，采用离线方案)
 ```
 
 ---
 
-## 9. 下一步行动
+## 9. 下一步行动 (下次工作)
 
-正在阶段 C — 编写 standalone pipeline runner:
+### 立即: 修复编译错误 (阶段 C1-C2)
 
-1. 编写 `eval/tools/run_clio_pipeline.cpp`:
-   - 读取 Clio 图片+深度+轨迹 → 逐帧 TSDF 积分为 VolumetricMap
-   - 使用 BatchPipeline 从 VolumetricMap 构建场景图 (FrontendModule)
-   - 输出 DSG JSON 文件
-2. 修复编译和链接问题
-3. 在 cubicle (640 帧) 上测试快速验证
-4. 成功后运行其他场景 + 进行 IoU 评估
+`eval/tools/run_clio_pipeline.cpp` 已创建，CMakeLists 已更新。以下编译错误待修复:
 
-### 技术路线说明
+| # | 错误 | 修复方案 | 状态 |
+|---|------|----------|------|
+| 1 | `surface_place_labels` 成员不存在 | 改为 `surface_places_labels` | ✅ |
+| 2 | `map.numBlocks()` 不存在 | 改为 `map.getTsdfLayer().numBlocks()` | ✅ |
+| 3 | `config::fromYamlFile` not found | 添加 `#include <config_utilities/parsing/yaml.h>` | ⬜ |
+| 4 | `VirtualConfig::isValid()` 不存在 | 改为 `isSet()` 或 `operator bool()` | ⬜ |
+| 5 | 修复后重新编译验证 | `catkin build hydra --no-deps` | ⬜ |
 
-因为 hydra_ros 无法编译 (缺失 vision_msgs), 采用离线方案:
-- `VolumetricMap` 直接进行 TSDF 重建
-- `BatchPipeline` 从 VolumetricMap 构建场景图
-- 无需 ROS topics, 直接读取文件数据
-- config_utilities 支持 `fromYamlFile()` 从 YAML 加载配置
+### 后续推进
+
+6. 编译通过后，用 cubicle (640 帧) 测试完整 pipeline:
+   ```bash
+   cd ~/catkin_ws && source ~/anaconda3/bin/activate ros-noetic
+   source devel/setup.bash
+   roscd hydra/eval  # 或直接去 build/hydra/eval/
+   ./run_clio_pipeline --data_path /data/YueChang/Clio/cubicle \
+       --output_dir /tmp/clio_output/cubicle \
+       --config_path /home/DazhiHuang/catkin_ws/src/reasoning_hydra/config \
+       --frame_skip 1
+   ```
+7. 验证输出: 检查 TSDF map + DSG JSON 是否生成
+8. 修复运行时错误 (如有)
+9. 对其他 3 个场景运行
+10. 进入阶段 E: IoU 评估
