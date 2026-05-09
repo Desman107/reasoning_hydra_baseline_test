@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-add_compile_options(-Wall -Wextra)
+add_compile_options(-Wall -Wextra -include optional)
 
 option(HYDRA_ENABLE_COVERAGE "Build core library with GCC --coverage option" OFF)
 option(HYDRA_ENABLE_EVAL "Build evaluation code" ON)

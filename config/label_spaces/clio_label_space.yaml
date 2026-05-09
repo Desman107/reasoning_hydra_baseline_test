@@ -1,0 +1,11 @@
+---
+# Minimal Clio label space (no semantic labels available)
+# Using empty-label approach: all surface labels as "unknown"
+total_semantic_labels: 2
+dynamic_labels: []
+invalid_labels: [0]
+object_labels: []
+surface_place_labels: [1]
+label_names:
+  - {label: 0, name: unknown}
+  - {label: 1, name: building}

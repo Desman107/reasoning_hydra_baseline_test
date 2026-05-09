@@ -1,6 +1,6 @@
 # CLAUDE.md — reasoning_hydra + Clio 数据集 工作指南
 
-> 最后更新: 2026-05-08 | 状态: 规划阶段
+> 最后更新: 2026-05-09 | 状态: 阶段 A 完成, 阶段 B 配置创建完成, 进入阶段 C
 
 ---
 
@@ -213,31 +213,33 @@ Clio 图像 640x480，需要 fx, fy, cx, cy。目前未知。
 
 | 步骤 | 任务 | 状态 | 备注 |
 |------|------|------|------|
-| A1 | 创建 conda 环境 + 安装 ROS Noetic | ⬜ 待开始 | |
-| A2 | 安装 C++ 依赖库 (Eigen, OpenCV, PCL, GTSAM, glog) | ⬜ 待开始 | |
-| A3 | 创建 catkin workspace | ⬜ 待开始 | |
-| A4 | clone 外部依赖仓库 (vcs import) | ⬜ 待开始 | |
-| A5 | rosdep install 解析剩余依赖 | ⬜ 待开始 | |
-| A6 | catkin build 编译 | ⬜ 待开始 | |
-| A7 | 解决编译错误（预计有） | ⬜ 待开始 | |
+| A1 | 创建 conda 环境 + 安装 ROS Noetic | ✅ 完成 | conda env ros-noetic (Python 3.9), ROS Noetic base 安装成功 |
+| A2 | 安装 C++ 依赖库 | ✅ 完成 | Eigen 3.4, OpenCV 4.5.5, PCL 1.12, GTSAM 4.1.1, glog 0.7.1, Boost 1.74 |
+| A3 | 创建 catkin workspace | ✅ 完成 | ~/catkin_ws, Release 构建, conda PREFIX_PATH 已配置 |
+| A4 | clone 外部依赖仓库 (vcs import) | ✅ 完成 | 12 个仓库全部 clone 到 ~/catkin_ws/src/ |
+| A5 | rosdep install | ⏭ 跳过 | 无 sudo, 改为手动安装缺失包 |
+| A6 | catkin build 首次编译 | ✅ 完成 | 12/12 全部成功 (4 个 GUI/ROS 包通过 CATKIN_IGNORE 跳过) |
+| A7 | 解决编译错误 | ✅ 完成 | 6 个编译/链接问题全部修复 (见下方修复清单) |
 
 ### 阶段 B: Clio 配置创建
 
 | 步骤 | 任务 | 状态 | 备注 |
 |------|------|------|------|
-| B1 | 确定语义标签方案 (A/B/C) | ⬜ 待开始 | |
-| B2 | 获取相机内参 | ⬜ 待开始 | |
-| B3 | 创建 `config/clio/` 配置文件 | ⬜ 待开始 | 基于 replica 模板 |
-| B4 | 创建 `config/label_spaces/clio_label_space.yaml` | ⬜ 待开始 | |
-| B5 | 验证配置被正确加载 | ⬜ 待开始 | |
+| B1 | 确定语义标签方案 (A/B/C) | ✅ C 方案 | 空标签先跑通几何流程，后续可升级 |
+| B2 | 获取相机内参 | ⬜ 待确认 | 原始 bag 无 CameraInfo，需推估 fx/fy/cx/cy |
+| B3 | 创建 `config/clio/` 配置文件 | ✅ 完成 | 7 个 yaml 文件基于 replica 模板创建 |
+| B4 | 创建 `config/label_spaces/clio_label_space.yaml` | ✅ 完成 | 最小标签空间 (unknown + building) |
+| B5 | 验证配置被正确加载 | ⬜ 待验证 | 需与 pipeline runner 一起测试 |
 
 ### 阶段 C: 数据接入
 
+采用方案: **standalone 离线 pipeline runner** (绕过 hydra_ros, 直接使用 hydra + BatchPipeline)
+
 | 步骤 | 任务 | 状态 | 备注 |
 |------|------|------|------|
-| C1 | 编写/修改 ROS 数据发布节点 | ⬜ 待开始 | 读取 Clio 图片+轨迹, 发布 ROS topics |
-| C2 | 创建 Clio launch 文件 | ⬜ 待开始 | 在 reasoning_hydra_ros 中 |
-| C3 | 验证数据流 (ROS topic echo) | ⬜ 待开始 | |
+| C1 | 编写 `run_clio_pipeline` standalone C++ 工具 | 🔴 进行中 | TSDF 重建 + Frontend(places/objects) + Rooms |
+| C2 | 构建并修复编译错误 | ⬜ 待开始 | |
+| C3 | 在 cubicle 上测试 | ⬜ 待开始 | 先小场景快速验证 |
 
 ### 阶段 D: 场景图构建
 
@@ -255,6 +257,49 @@ Clio 图像 640x480，需要 fx, fy, cx, cy。目前未知。
 | E1 | 编写 IoU 计算脚本 (物体 bbox) | ⬜ 待开始 | 利用 Clio 标注的 3D bbox |
 | E2 | 编写房间分割评估脚本 | ⬜ 待开始 | 利用 rooms_*.yaml |
 | E3 | 汇总评估结果 | ⬜ 待开始 | |
+
+---
+
+## 6.5 构建修复清单 (2026-05-08 ~ 2026-05-09)
+
+最终结果: **12/12 全部成功**.
+
+### 已修复的编译/链接问题:
+
+| # | 问题 | 包名 | 原因 | 解决方案 |
+|---|------|------|------|----------|
+| 1 | `nlohmann_json` not found | spark_dsg | conda 前缀不在 CMAKE_PREFIX_PATH | `conda install -c conda-forge nlohmann_json` + 配置 catkin CMAKE_PREFIX_PATH |
+| 2 | `libglog` pkg-config not found | spatial_hash | conda glog 缺少 .pc 文件 | 手动创建 `/home/DazhiHuang/anaconda3/envs/ros-noetic/lib/pkgconfig/libglog.pc` |
+| 3 | `vision_msgs` not found | hydra_msgs 等 | conda 无 py39 构建 | 添加 CATKIN_IGNORE 跳过 hydra_msgs, hydra_ros, hydra_ui 等 |
+| 4 | `MakeCheckOpValueString` 编译错误 | config_utilities | glog 0.7.x 移除该 API | `mamba install -c conda-forge glog=0.6.0` 降级 |
+| 5 | `std::optional` 未定义 (45+ 文件) | hydra, spark_dsg, kimera_pgmo | gcc 11 不再隐式包含 `<optional>` | 全局方案: `add_compile_options(-include optional)` 在 hydra CMakeLists.txt; 个别方案: 在 spark_dsg/mesh.h 和 kimera_pgmo/mesh_types.h 添加 `#include <optional>` |
+| 6 | PCL 类型不匹配 | kimera_pgmo | conda PCL 1.12 中 `pcl::Vertices::vertices` 是 `vector<int>` 而非 `vector<uint32_t>` | 在 `common_functions.cpp` 中用 begin/end 迭代器显式转换 |
+| 7 | ZMQ 链接错误 `/usr/bin/ld: cannot find -lzmq` | spark_dsg | `pkg_check_modules` 找到 libzmq 但 `zmq_LIBRARY_DIRS` 未传给 linker | 在 spark_dsg CMakeLists.txt 中添加 `target_link_directories(${PROJECT_NAME} PRIVATE ${zmq_LIBRARY_DIRS})` |
+
+### 跳过的包 (CATKIN_IGNORE):
+
+这些是 GUI/ROS 可视化/消息包，不影响核心场景图构建：
+
+| 包 | 跳过原因 |
+|---|---------|
+| hydra_ui | 依赖 rviz (GUI) |
+| hydra_msgs | 依赖 vision_msgs (无 py39 conda 构建) |
+| hydra_ros | 依赖 hydra_msgs |
+| mesh_rviz_plugins | 依赖 rviz (GUI) |
+| pose_graph_tools_ros | 依赖 interactive_markers |
+| kimera_pgmo_ros | ROS 封装, 非核心 |
+| kimera_pgmo_rviz | 依赖 rviz (GUI) |
+| kimera_pgmo_msgs | cmake 依赖传播问题 |
+| semantic_inference | 语义推理 (可选) |
+| semantic_inference_ros | 依赖 semantic_inference |
+
+### 构建成功的 12 个包:
+
+```
+catkin_simple, config_utilities, hydra, kimera_pgmo, kimera_rpgo,
+pose_graph_tools, pose_graph_tools_msgs, semantic_inference_msgs,
+semantic_inference_python, spark_dsg, spatial_hash, teaserpp
+```
 
 ---
 
@@ -302,5 +347,20 @@ src/
 
 ## 9. 下一步行动
 
-1. **立即**: 开始阶段 A — 创建 conda 环境，安装 ROS Noetic
-2. 同时进行: 阶段 B 的前期调研 — 确定语义标签方案 (A/B/C)，查找相机内参
+正在阶段 C — 编写 standalone pipeline runner:
+
+1. 编写 `eval/tools/run_clio_pipeline.cpp`:
+   - 读取 Clio 图片+深度+轨迹 → 逐帧 TSDF 积分为 VolumetricMap
+   - 使用 BatchPipeline 从 VolumetricMap 构建场景图 (FrontendModule)
+   - 输出 DSG JSON 文件
+2. 修复编译和链接问题
+3. 在 cubicle (640 帧) 上测试快速验证
+4. 成功后运行其他场景 + 进行 IoU 评估
+
+### 技术路线说明
+
+因为 hydra_ros 无法编译 (缺失 vision_msgs), 采用离线方案:
+- `VolumetricMap` 直接进行 TSDF 重建
+- `BatchPipeline` 从 VolumetricMap 构建场景图
+- 无需 ROS topics, 直接读取文件数据
+- config_utilities 支持 `fromYamlFile()` 从 YAML 加载配置

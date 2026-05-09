@@ -30,6 +30,9 @@ target_link_libraries(gt_trajectory_optimizer ${PROJECT_NAME}_eval KimeraRPGO)
 add_executable(merge_graphs tools/merge_graphs.cpp)
 target_link_libraries(merge_graphs ${PROJECT_NAME}_eval)
 
+add_executable(run_clio_pipeline tools/run_clio_pipeline.cpp)
+target_link_libraries(run_clio_pipeline ${PROJECT_NAME}_eval)
+
 if(${HYDRA_ENABLE_ROS_INSTALL_LAYOUT})
   install(
     TARGETS ${PROJECT_NAME}_eval compress_graph compute_filtrations evaluate_places
