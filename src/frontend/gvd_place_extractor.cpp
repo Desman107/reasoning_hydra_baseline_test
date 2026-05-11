@@ -87,8 +87,10 @@ GvdPlaceExtractor::GvdPlaceExtractor(const Config& c)
   if (tsdf_interpolator_) {
     LOG(INFO) << "Downsampling TSDF when creating places!";
   }
+  LOG(INFO) << "[DEBUG] tsdf_interpolator created, getting map_config...";
 
   const auto& map_config = GlobalInfo::instance().getMapConfig();
+  LOG(INFO) << "[DEBUG] got map_config, checking distance...";
   if (static_cast<float>(config.gvd.min_distance_m) >= map_config.truncation_distance) {
     LOG(ERROR)
         << "integrator min distance must be less than truncation distance (currently "
@@ -153,15 +155,22 @@ std::vector<bool> GvdPlaceExtractor::inFreespace(const PositionMatrix& positions
 
 void GvdPlaceExtractor::detect(const ReconstructionOutput& msg) {
   ScopedTimer timer("frontend/detect_gvd", msg.timestamp_ns, true, 2, false);
+  LOG(INFO) << "[DEBUG] GVD detect() start";
 
   const auto& map = msg.map();
   const auto* tsdf = &map.getTsdfLayer();
+  LOG(INFO) << "[DEBUG] got tsdf layer, checking interpolator...";
 
   TsdfLayer::Ptr tsdf_ptr;
+  std::cerr << "[DEBUG] tsdf_ptr created, checking tsdf_interpolator_: " << (tsdf_interpolator_ ? "set" : "null") << std::endl;
   if (tsdf_interpolator_) {
+    std::cerr << "[DEBUG] entering interpolator branch..." << std::endl;
     ScopedTimer dtimer("frontend/downsample_tsdf", msg.timestamp_ns, true, 2, false);
+    LOG(INFO) << "[DEBUG] calling blockIndicesWithCondition...";
     const auto blocks = tsdf->blockIndicesWithCondition(TsdfBlock::esdfUpdated);
+    LOG(INFO) << "[DEBUG] got " << blocks.size() << " blocks, interpolating...";
     tsdf_ptr = tsdf_interpolator_->interpolate(*tsdf, &blocks);
+    LOG(INFO) << "[DEBUG] interpolation done, " << tsdf_ptr->numBlocks() << " blocks";
     for (auto& block : *tsdf_ptr) {
       block.setUpdated();
     }
@@ -170,11 +179,16 @@ void GvdPlaceExtractor::detect(const ReconstructionOutput& msg) {
   }
 
   if (!gvd_) {
+    std::cerr << "[DEBUG] creating GvdLayer, voxel_size=" << tsdf->voxel_size << ", vps=" << tsdf->voxels_per_side << std::endl;
     gvd_.reset(new places::GvdLayer(tsdf->voxel_size, tsdf->voxels_per_side));
+    std::cerr << "[DEBUG] GvdLayer created, graph_extractor_=" << (graph_extractor_ ? "set" : "null") << std::endl;
     gvd_integrator_.reset(new GvdIntegrator(config.gvd, gvd_, graph_extractor_));
+    std::cerr << "[DEBUG] GvdIntegrator created" << std::endl;
   }
+  std::cerr << "[DEBUG] getting world_T_body..." << std::endl;
 
   const Eigen::Isometry3f world_T_body = msg.world_T_body().cast<float>();
+  std::cerr << "[DEBUG] world_T_body got, starting gvd update..." << std::endl;
   latest_pos_ = world_T_body.translation().cast<double>();
 
   {  // start critical section

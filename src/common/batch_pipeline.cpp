@@ -56,24 +56,25 @@ BatchPipeline::~BatchPipeline() {}
 DynamicSceneGraph::Ptr BatchPipeline::construct(const VFConfig& frontend_config,
                                                 VolumetricMap& map,
                                                 const RFConfig* room_config) const {
-  if (!map.hasSemantics()) {
+  LOG(INFO) << "[DEBUG] Checking map semantics..."; if (!map.hasSemantics()) {
     return nullptr;
   }
 
   MeshIntegratorConfig mesh_config;
   MeshIntegrator integrator(mesh_config);
-  integrator.generateMesh(map, false, false);
+  integrator.generateMesh(map, false, false); LOG(INFO) << "[DEBUG] Mesh generated, creating module...";
 
   auto dsg = GlobalInfo::instance().createSharedDsg();
   auto graph = dsg->graph->clone();
   auto state = std::make_shared<SharedModuleState>();
-  auto module = frontend_config.create(dsg, state, LogSetup::Ptr());
+  state->backend_graph = GlobalInfo::instance().createSharedDsg();
+  LOG(INFO) << "[DEBUG] Calling frontend_config.create..."; auto module = frontend_config.create(dsg, state, LogSetup::Ptr());
   const auto queue = module->getQueue();
 
   // TODO(nathan) this is a little sketchy given the lack of pose info
   auto msg = std::make_shared<ReconstructionOutput>();
   msg->setMap(map);
-  queue->push(msg);
+  queue->push(msg); LOG(INFO) << "[DEBUG] msg pushed, calling spinOnce...";
 
   if (!module->spinOnce()) {
     return nullptr;

@@ -323,8 +323,12 @@ void FrontendModule::spinOnce(const ReconstructionOutput::Ptr& msg) {
   }
 
   backend_input_->mesh_update = last_mesh_update_;
-  backend_input_->feature_vector = msg->sensor_data->image_feature;
-  backend_input_->setPointCloud(msg->getMapPointer()->getBaseSemanticPointCloudPtr());
+  if (msg->sensor_data) {
+    backend_input_->feature_vector = msg->sensor_data->image_feature;
+  }
+  if (msg->getMapPointer()) {
+    backend_input_->setPointCloud(msg->getMapPointer()->getBaseSemanticPointCloudPtr());
+  }
   state_->backend_queue.push(backend_input_);
   if (state_->lcd_queue) {
     state_->lcd_queue->push(lcd_input_);
@@ -413,10 +417,12 @@ void FrontendModule::updateObjects(const ReconstructionOutput& input) {
                             clusters,
                             last_mesh_update_->getTotalArchivedVertices(),
                             *dsg_->graph,
-                            input.sensor_data->relations);
-    addPlaceObjectEdges(input.timestamp_ns);
-    // Clear graph meshes of feature vectors
-    clearMeshFeatures();
+                            input.sensor_data ? input.sensor_data->relations : std::nullopt);
+    if (input.sensor_data) {
+      addPlaceObjectEdges(input.timestamp_ns);
+      // Clear graph meshes of feature vectors
+      clearMeshFeatures();
+    }
   }  // end dsg critical section
 }
 

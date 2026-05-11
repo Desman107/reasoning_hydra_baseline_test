@@ -44,6 +44,8 @@
 #include <string>
 #include <vector>
 
+#include <config_utilities/parsing/yaml.h>
+
 #include "hydra/common/batch_pipeline.h"
 #include "hydra/common/config_utilities.h"
 #include "hydra/common/global_info.h"
@@ -61,13 +63,13 @@ DEFINE_string(data_path, "", "Path to Clio scene directory");
 DEFINE_string(output_dir, "/tmp/clio_output", "Output directory");
 DEFINE_string(config_path, "", "Path to hydra config directory");
 
-// Camera intrinsics (default: Kinect-like 640x480)
+// Camera intrinsics (RealSense D455 640x480, adjusted from realsense_pipeline_intrinsics.yaml)
 DEFINE_int32(img_width, 640, "Image width");
 DEFINE_int32(img_height, 480, "Image height");
-DEFINE_double(fx, 525.0, "Camera focal length x");
-DEFINE_double(fy, 525.0, "Camera focal length y");
-DEFINE_double(cx, 319.5, "Camera principal point x");
-DEFINE_double(cy, 239.5, "Camera principal point y");
+DEFINE_double(fx, 372.4634, "Camera focal length x");
+DEFINE_double(fy, 371.5072, "Camera focal length y");
+DEFINE_double(cx, 315.9902, "Camera principal point x");
+DEFINE_double(cy, 254.5944, "Camera principal point y");
 
 // Map config
 DEFINE_double(voxel_size, 0.05, "TSDF voxel size (meters)");
@@ -108,10 +110,10 @@ std::vector<ClioFrame> loadClioData(const std::string& data_path,
       iss >> vals[i];
     }
     Eigen::Matrix4d T = Eigen::Matrix4d::Identity();
-    // Column-major: row r, col c = vals[r + 4*c]
+    // Row-major: row r, col c = vals[r*4 + c]
     for (int r = 0; r < 4; ++r) {
       for (int c = 0; c < 4; ++c) {
-        T(r, c) = vals[r + 4 * c];
+        T(r, c) = vals[r * 4 + c];
       }
     }
     poses.push_back(T);
@@ -170,12 +172,13 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
   // 2. Setup GlobalInfo with PipelineConfig
   PipelineConfig pipeline_config;
   pipeline_config.default_verbosity = 1;
-  pipeline_config.default_num_threads = -1;
+  pipeline_config.default_num_threads = 2;
   pipeline_config.enable_reconstruction = true;
   pipeline_config.enable_lcd = false;
   pipeline_config.logs.log_dir = output_dir + "/hydra_logs";
 
   // Configure label space (minimal: 2 labels)
+  pipeline_config.label_space.total_labels = 2;
   pipeline_config.label_space.invalid_labels = {0};
   pipeline_config.label_space.surface_places_labels = {1};
   pipeline_config.label_space.object_labels = {};
@@ -188,7 +191,7 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
   pipeline_config.map.voxel_size = FLAGS_voxel_size;
   pipeline_config.map.truncation_distance = FLAGS_truncation_distance;
 
-  GlobalInfo::init(pipeline_config, 0, true);
+  GlobalInfo::init(pipeline_config, 0, false);  // don't freeze — BatchPipeline re-inits
   LOG(INFO) << "GlobalInfo initialized";
 
   // 3. Create Camera
@@ -208,7 +211,7 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
 
   // 4. Create ProjectiveIntegrator and VolumetricMap
   ProjectiveIntegratorConfig integrator_config;
-  integrator_config.num_threads = -1;
+  integrator_config.num_threads = 2;
   integrator_config.interp_method = "bilinear";
   integrator_config.semantic_integrator = MLESemanticIntegrator::Config{};
 
@@ -247,8 +250,8 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
     cv::Mat depth_float;
     depth.convertTo(depth_float, CV_32FC1, 1.0 / 1000.0);
 
-    // Create empty label image (all zeros = unknown)
-    cv::Mat labels = cv::Mat::zeros(color.size(), CV_32SC1);
+    // Create label image (all ones = "building", required for surface place detection)
+    cv::Mat labels = cv::Mat::ones(color.size(), CV_32SC1);
 
     // Create InputData
     InputData input_data(camera);
@@ -299,7 +302,7 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
   }
 
   // Set up surface places (required for room detection)
-  if (!frontend_config.surface_places.isValid()) {
+  if (!frontend_config.surface_places.isSet()) {
     Place2dSegmenter::Config places_config;
     places_config.cluster_tolerance = 0.3;
     places_config.min_cluster_size = 50;
@@ -307,10 +310,14 @@ void runClioPipeline(const std::string& data_path, const std::string& output_dir
     frontend_config.surface_places = places_config;
   }
 
+  LOG(INFO) << "[DEBUG] Creating BatchPipeline...";
   BatchPipeline batch_pipeline(pipeline_config);
+  LOG(INFO) << "[DEBUG] BatchPipeline created, constructing scene graph...";
 
   config::VirtualConfig<FrontendModule> vf_config(frontend_config);
+  LOG(INFO) << "[DEBUG] VirtualConfig created, calling construct...";
   auto dsg = batch_pipeline.construct(vf_config, map);
+  LOG(INFO) << "[DEBUG] construct returned";
 
   if (!dsg) {
     LOG(FATAL) << "Failed to construct scene graph!";
