@@ -202,6 +202,233 @@
       "obb_volume_m3": 20.305812718670364
     }
   ],
+  "place_surface_types": [
+    {
+      "place_id": 5836665117072162816,
+      "type": "other",
+      "normal": [
+        -0.2147516757343704,
+        0.31685260929160664,
+        0.923843136985051
+      ],
+      "normal_dominant_ratio": 0.6347485473883206,
+      "position": [
+        4.631587505340576,
+        7.057074546813965,
+        1.5487453937530518
+      ]
+    },
+    {
+      "place_id": 5836665117072162817,
+      "type": "other",
+      "normal": [
+        -0.6068178164839143,
+        0.48052198826900183,
+        0.6331435511696373
+      ],
+      "normal_dominant_ratio": 0.36800329916201613,
+      "position": [
+        3.460453987121582,
+        8.263972282409668,
+        1.262902855873108
+      ]
+    },
+    {
+      "place_id": 5836665117072162818,
+      "type": "wall",
+      "normal": [
+        -0.9461675764235374,
+        0.2616001390904414,
+        0.1906102949808095
+      ],
+      "normal_dominant_ratio": 0.6766178881925446,
+      "position": [
+        2.670536994934082,
+        5.009320259094238,
+        0.9502519965171814
+      ]
+    },
+    {
+      "place_id": 5836665117072162819,
+      "type": "wall",
+      "normal": [
+        -0.026772856852656297,
+        0.969253489044566,
+        0.24460353249878253
+      ],
+      "normal_dominant_ratio": 0.7812591860350615,
+      "position": [
+        1.2625524997711182,
+        6.364948272705078,
+        0.9512248635292053
+      ]
+    },
+    {
+      "place_id": 5836665117072162820,
+      "type": "floor",
+      "normal": [
+        -0.10177421325033072,
+        -0.14208860871559043,
+        0.9846079609624047
+      ],
+      "normal_dominant_ratio": 0.8014907432598678,
+      "position": [
+        0.23658429086208344,
+        8.98111629486084,
+        1.2042193412780762
+      ]
+    },
+    {
+      "place_id": 5836665117072162821,
+      "type": "wall",
+      "normal": [
+        -0.9589224796238333,
+        -0.2591716971715345,
+        0.11531569475706965
+      ],
+      "normal_dominant_ratio": 0.7191505777855701,
+      "position": [
+        -0.6636823415756226,
+        7.275559425354004,
+        0.5167000889778137
+      ]
+    },
+    {
+      "place_id": 5836665117072162822,
+      "type": "wall",
+      "normal": [
+        -0.8222754957090374,
+        0.5187506626956355,
+        0.234010168816007
+      ],
+      "normal_dominant_ratio": 0.522067638343189,
+      "position": [
+        -2.5813310146331787,
+        8.858477592468262,
+        -0.6183562278747559
+      ]
+    },
+    {
+      "place_id": 5836665117072162823,
+      "type": "wall",
+      "normal": [
+        -0.05461254295353123,
+        -0.9850790369822553,
+        0.1632077236231818
+      ],
+      "normal_dominant_ratio": 0.8189206145400957,
+      "position": [
+        0.9882208108901978,
+        3.3336145877838135,
+        0.035734038800001144
+      ]
+    },
+    {
+      "place_id": 5836665117072162824,
+      "type": "wall",
+      "normal": [
+        -0.998442158125911,
+        0.05495668589292162,
+        0.009644664459693295
+      ],
+      "normal_dominant_ratio": 0.9392298152133037,
+      "position": [
+        -0.9550308585166931,
+        4.349002838134766,
+        -0.1098848357796669
+      ]
+    },
+    {
+      "place_id": 5836665117072162825,
+      "type": "other",
+      "normal": [
+        0.725179786270856,
+        0.35546683320509403,
+        0.58970976596568
+      ],
+      "normal_dominant_ratio": 0.434146744100786,
+      "position": [
+        -0.9638473391532898,
+        1.390221118927002,
+        -1.271564245223999
+      ]
+    },
+    {
+      "place_id": 5836665117072162826,
+      "type": "wall",
+      "normal": [
+        0.9227807507341339,
+        0.38382521558198934,
+        0.033968955797720524
+      ],
+      "normal_dominant_ratio": 0.6883470184644668,
+      "position": [
+        -1.7981393337249756,
+        2.8905084133148193,
+        -0.7262106537818909
+      ]
+    },
+    {
+      "place_id": 5836665117072162827,
+      "type": "wall",
+      "normal": [
+        -0.26641658361308934,
+        -0.9419850005999167,
+        0.20417262946022874
+      ],
+      "normal_dominant_ratio": 0.6668569986731591,
+      "position": [
+        -2.4339511394500732,
+        6.279794692993164,
+        0.6675625443458557
+      ]
+    },
+    {
+      "place_id": 5836665117072162828,
+      "type": "wall",
+      "normal": [
+        0.24417096365396715,
+        0.964898842580908,
+        0.0966993489860043
+      ],
+      "normal_dominant_ratio": 0.7389505554247787,
+      "position": [
+        -3.4860177040100098,
+        5.159514904022217,
+        -0.17203788459300995
+      ]
+    },
+    {
+      "place_id": 5836665117072162829,
+      "type": "wall",
+      "normal": [
+        -0.1475398533101429,
+        0.9030851545153606,
+        0.4033226938559109
+      ],
+      "normal_dominant_ratio": 0.6211262987030945,
+      "position": [
+        -4.290052890777588,
+        7.52894926071167,
+        -0.2958586812019348
+      ]
+    },
+    {
+      "place_id": 5836665117072162830,
+      "type": "wall",
+      "normal": [
+        -0.7329384965282761,
+        -0.679861376857932,
+        0.024283092136441975
+      ],
+      "normal_dominant_ratio": 0.5100182202846676,
+      "position": [
+        -5.132574558258057,
+        6.9497971534729,
+        0.5522148609161377
+      ]
+    }
+  ],
   "object_proximity": {
     "distances": [
       {
@@ -572,6 +799,876 @@
       "median": 1.0463321450309344
     }
   },
+  "object_chamfer_distance": [
+    {
+      "task": "get condiment packets",
+      "chamfer": 1.0320898293311103,
+      "place_to_gt_mean": 0.08898582574246788,
+      "gt_to_place_mean": 0.9431040035886424,
+      "place_to_gt_max": 0.2255526935348168,
+      "gt_to_place_max": 1.4580771133157602,
+      "n_place_points": 6249,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get drink cans",
+      "chamfer": 0.9214833031906347,
+      "place_to_gt_mean": 0.09979350630206586,
+      "gt_to_place_mean": 0.8216897968885688,
+      "place_to_gt_max": 0.23606196259531442,
+      "gt_to_place_max": 1.3849774501169834,
+      "n_place_points": 7706,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get eyeglasses",
+      "chamfer": 1.1538545475755857,
+      "place_to_gt_mean": 0.12606332961470637,
+      "gt_to_place_mean": 1.0277912179608792,
+      "place_to_gt_max": 0.19162163411641034,
+      "gt_to_place_max": 1.4590826135794541,
+      "n_place_points": 4869,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get glasses case",
+      "chamfer": 1.1325871666049925,
+      "place_to_gt_mean": 0.12907580614859576,
+      "gt_to_place_mean": 1.0035113604563968,
+      "place_to_gt_max": 0.18665138383316007,
+      "gt_to_place_max": 1.4604806021636383,
+      "n_place_points": 4926,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get grey jacket",
+      "chamfer": 1.08357497469433,
+      "place_to_gt_mean": 0.25448569854276043,
+      "gt_to_place_mean": 0.8290892761515696,
+      "place_to_gt_max": 0.5955826884938663,
+      "gt_to_place_max": 1.4034755957509923,
+      "n_place_points": 2164,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get my silver water bottle",
+      "chamfer": 1.0312494032633586,
+      "place_to_gt_mean": 0.12521326507528593,
+      "gt_to_place_mean": 0.9060361381880726,
+      "place_to_gt_max": 0.27182597599385583,
+      "gt_to_place_max": 1.4476899066186908,
+      "n_place_points": 8214,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get notebooks",
+      "chamfer": 0.703210529729415,
+      "place_to_gt_mean": 0.12179018623117763,
+      "gt_to_place_mean": 0.5814203434982373,
+      "place_to_gt_max": 0.31650504807247676,
+      "gt_to_place_max": 1.326397873450955,
+      "n_place_points": 7976,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get mudstone rock",
+      "chamfer": 0.8824875574563863,
+      "place_to_gt_mean": 0.0616808888748397,
+      "gt_to_place_mean": 0.8208066685815466,
+      "place_to_gt_max": 0.13904598161988038,
+      "gt_to_place_max": 1.4142839850398918,
+      "n_place_points": 1828,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "tool to cut paper",
+      "chamfer": 0.9864193600365151,
+      "place_to_gt_mean": 0.10831080628408926,
+      "gt_to_place_mean": 0.8781085537524258,
+      "place_to_gt_max": 0.3040197297844594,
+      "gt_to_place_max": 1.459070729676725,
+      "n_place_points": 9101,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get sticky notes",
+      "chamfer": 0.9552546427134921,
+      "place_to_gt_mean": 0.10124975221220234,
+      "gt_to_place_mean": 0.8540048905012898,
+      "place_to_gt_max": 0.1796589574618345,
+      "gt_to_place_max": 1.4217380661681762,
+      "n_place_points": 4973,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get textbooks",
+      "chamfer": 0.7675275763055158,
+      "place_to_gt_mean": 0.10755067960837104,
+      "gt_to_place_mean": 0.6599768966971448,
+      "place_to_gt_max": 0.3915838968234214,
+      "gt_to_place_max": 1.4168460026665848,
+      "n_place_points": 7404,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get waste bins",
+      "chamfer": 0.9301276243076336,
+      "place_to_gt_mean": 0.20995520896561928,
+      "gt_to_place_mean": 0.7201724153420144,
+      "place_to_gt_max": 0.530197403767939,
+      "gt_to_place_max": 1.7791477263747246,
+      "n_place_points": 12290,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "move hats",
+      "chamfer": 0.7973989512646107,
+      "place_to_gt_mean": 0.08583549905447342,
+      "gt_to_place_mean": 0.7115634522101373,
+      "place_to_gt_max": 0.26082120007754517,
+      "gt_to_place_max": 1.3657398464198514,
+      "n_place_points": 5663,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "clean backpacks",
+      "chamfer": 0.7442864227658681,
+      "place_to_gt_mean": 0.14435768489908954,
+      "gt_to_place_mean": 0.5999287378667786,
+      "place_to_gt_max": 0.4531051922084997,
+      "gt_to_place_max": 1.256530139709885,
+      "n_place_points": 4290,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get red crockery",
+      "chamfer": 0.6902681621801875,
+      "place_to_gt_mean": 0.09042129282567142,
+      "gt_to_place_mean": 0.599846869354516,
+      "place_to_gt_max": 0.24325384916155787,
+      "gt_to_place_max": 1.2668923418269524,
+      "n_place_points": 8940,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get hardware drill",
+      "chamfer": 0.916798807211493,
+      "place_to_gt_mean": 0.09510363349159659,
+      "gt_to_place_mean": 0.8216951737198964,
+      "place_to_gt_max": 0.19611451681360578,
+      "gt_to_place_max": 1.4299498563331678,
+      "n_place_points": 9960,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get quartz rock",
+      "chamfer": 0.8919071708890743,
+      "place_to_gt_mean": 0.05809046540893041,
+      "gt_to_place_mean": 0.833816705480144,
+      "place_to_gt_max": 0.1347810281703001,
+      "gt_to_place_max": 1.390130351332177,
+      "n_place_points": 1781,
+      "n_gt_surface_samples": 1000
+    },
+    {
+      "task": "get tape measure",
+      "chamfer": 1.0473730138092816,
+      "place_to_gt_mean": 0.10781662868719272,
+      "gt_to_place_mean": 0.9395563851220888,
+      "place_to_gt_max": 0.1962242711676171,
+      "gt_to_place_max": 1.4331462342464647,
+      "n_place_points": 9832,
+      "n_gt_surface_samples": 1000
+    }
+  ],
+  "object_surface_coverage": [
+    {
+      "task": "get condiment packets",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.038656527249683145,
+          "recall": 0.623,
+          "f1": 0.07279612755173384
+        },
+        "0.25": {
+          "precision": 0.08935361216730038,
+          "recall": 1.0,
+          "f1": 0.16404886561954624
+        },
+        "0.5": {
+          "precision": 0.31368821292775667,
+          "recall": 1.0,
+          "f1": 0.47756874095513746
+        }
+      },
+      "n_nearby_place_points": 1578,
+      "obj_center": [
+        -0.8281684432464107,
+        1.618708027981676,
+        -0.7565765940807966
+      ],
+      "obj_extents": [
+        0.27291324120111904,
+        0.18658585861560337,
+        0.012436096664508779
+      ]
+    },
+    {
+      "task": "get drink cans",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.031054045983875785,
+          "recall": 0.527,
+          "f1": 0.058651961584292145
+        },
+        "0.25": {
+          "precision": 0.11346670647954614,
+          "recall": 1.0,
+          "f1": 0.20380799141861092
+        },
+        "0.5": {
+          "precision": 0.38041206330247834,
+          "recall": 1.0,
+          "f1": 0.5511572571922994
+        }
+      },
+      "n_nearby_place_points": 3349,
+      "obj_center": [
+        -0.4130548447098006,
+        4.026933967079562,
+        -0.8288092174959546
+      ],
+      "obj_extents": [
+        0.14058790894177423,
+        0.15402738189677453,
+        0.0899725698630996
+      ]
+    },
+    {
+      "task": "get eyeglasses",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.0036231884057971015,
+          "recall": 0.289,
+          "f1": 0.007156653954732306
+        },
+        "0.25": {
+          "precision": 0.024758454106280192,
+          "recall": 1.0,
+          "f1": 0.04832056570418385
+        },
+        "0.5": {
+          "precision": 0.1358695652173913,
+          "recall": 1.0,
+          "f1": 0.23923444976076552
+        }
+      },
+      "n_nearby_place_points": 1656,
+      "obj_center": [
+        -0.8269663624176518,
+        1.2614906997982591,
+        -0.6972705595853275
+      ],
+      "obj_extents": [
+        0.0971707706519306,
+        0.03114523848256618,
+        0.01932181792723863
+      ]
+    },
+    {
+      "task": "get glasses case",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.006060606060606061,
+          "recall": 0.234,
+          "f1": 0.011815198182277201
+        },
+        "0.25": {
+          "precision": 0.027878787878787878,
+          "recall": 1.0,
+          "f1": 0.054245283018867926
+        },
+        "0.5": {
+          "precision": 0.14666666666666667,
+          "recall": 1.0,
+          "f1": 0.2558139534883721
+        }
+      },
+      "n_nearby_place_points": 1650,
+      "obj_center": [
+        -0.8235050791926535,
+        1.2693207173989278,
+        -0.7186256385288012
+      ],
+      "obj_extents": [
+        0.14304484717131838,
+        0.03749586186111527,
+        0.015573770390424213
+      ]
+    },
+    {
+      "task": "get grey jacket",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.005396527451900516,
+          "recall": 0.045,
+          "f1": 0.00963732017319242
+        },
+        "0.25": {
+          "precision": 0.02651337400281558,
+          "recall": 0.5265,
+          "f1": 0.05048446228865102
+        },
+        "0.5": {
+          "precision": 0.07602064758329423,
+          "recall": 0.9665,
+          "f1": 0.1409544378033693
+        }
+      },
+      "n_nearby_place_points": 4262,
+      "obj_center": [
+        -0.015205242423478815,
+        0.7188779042716769,
+        -0.7064747787465553
+      ],
+      "obj_extents": [
+        0.7180948489311085,
+        0.2573142345864649,
+        0.14747744239790833
+      ]
+    },
+    {
+      "task": "get my silver water bottle",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.00813692480359147,
+          "recall": 0.4095,
+          "f1": 0.01595678211948204
+        },
+        "0.25": {
+          "precision": 0.07042648709315376,
+          "recall": 0.97,
+          "f1": 0.1313186339021812
+        },
+        "0.5": {
+          "precision": 0.2351290684624018,
+          "recall": 1.0,
+          "f1": 0.38073602907769194
+        }
+      },
+      "n_nearby_place_points": 3564,
+      "obj_center": [
+        -0.5229224565553222,
+        4.0130828846435636,
+        -0.7692620230874511
+      ],
+      "obj_extents": [
+        0.22750499201736007,
+        0.048001063355423895,
+        0.04349519156009585
+      ]
+    },
+    {
+      "task": "get notebooks",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.03323958066990539,
+          "recall": 0.462,
+          "f1": 0.06201720084135223
+        },
+        "0.25": {
+          "precision": 0.09162192107730334,
+          "recall": 0.9395,
+          "f1": 0.16696142927926977
+        },
+        "0.5": {
+          "precision": 0.2573936759567033,
+          "recall": 1.0,
+          "f1": 0.40940825594794283
+        }
+      },
+      "n_nearby_place_points": 11733,
+      "obj_center": [
+        -0.2557681768757725,
+        3.704339132545685,
+        -0.8591575595873026
+      ],
+      "obj_extents": [
+        0.6554568592737819,
+        0.3445382793603862,
+        0.03239179693053502
+      ]
+    },
+    {
+      "task": "get mudstone rock",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.06051282051282051,
+          "recall": 0.8785,
+          "f1": 0.11322638340865339
+        },
+        "0.25": {
+          "precision": 0.15692307692307692,
+          "recall": 1.0,
+          "f1": 0.2712765957446808
+        },
+        "0.5": {
+          "precision": 0.4153846153846154,
+          "recall": 1.0,
+          "f1": 0.5869565217391305
+        }
+      },
+      "n_nearby_place_points": 975,
+      "obj_center": [
+        -1.0005807348833125,
+        0.10824713730135205,
+        -0.6320028777098392
+      ],
+      "obj_extents": [
+        0.12843435306064885,
+        0.07444383574317419,
+        0.05603210110366533
+      ]
+    },
+    {
+      "task": "tool to cut paper",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.05415531335149864,
+          "recall": 0.5795,
+          "f1": 0.09905386548785969
+        },
+        "0.25": {
+          "precision": 0.19516348773841963,
+          "recall": 0.928,
+          "f1": 0.32250285661606837
+        },
+        "0.5": {
+          "precision": 0.4315395095367847,
+          "recall": 1.0,
+          "f1": 0.6029026885557934
+        }
+      },
+      "n_nearby_place_points": 2936,
+      "obj_center": [
+        -0.7682798967878719,
+        2.8568822267764427,
+        -0.8081207463481744
+      ],
+      "obj_extents": [
+        0.3014778333104136,
+        0.12788320770015332,
+        0.02778094244513876
+      ]
+    },
+    {
+      "task": "get sticky notes",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.014184397163120567,
+          "recall": 0.4665,
+          "f1": 0.02753166658059947
+        },
+        "0.25": {
+          "precision": 0.057180851063829786,
+          "recall": 1.0,
+          "f1": 0.10817610062893081
+        },
+        "0.5": {
+          "precision": 0.3324468085106383,
+          "recall": 1.0,
+          "f1": 0.49900199600798406
+        }
+      },
+      "n_nearby_place_points": 2256,
+      "obj_center": [
+        -1.217614641369694,
+        1.3247901012197145,
+        -0.6464504823167732
+      ],
+      "obj_extents": [
+        0.17929858729368622,
+        0.17851927411012494,
+        0.01491346081969745
+      ]
+    },
+    {
+      "task": "get textbooks",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.04410206244395533,
+          "recall": 0.6,
+          "f1": 0.0821647344707133
+        },
+        "0.25": {
+          "precision": 0.08526942202657536,
+          "recall": 0.9105,
+          "f1": 0.15593531401514527
+        },
+        "0.5": {
+          "precision": 0.18871769788864434,
+          "recall": 1.0,
+          "f1": 0.3175147442051845
+        }
+      },
+      "n_nearby_place_points": 12267,
+      "obj_center": [
+        -1.035705267707465,
+        2.077850465037188,
+        -0.7281000283877901
+      ],
+      "obj_extents": [
+        0.6029353949826711,
+        0.4127090102411313,
+        0.08129864593367786
+      ]
+    },
+    {
+      "task": "get waste bins",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.03071152905365005,
+          "recall": 0.223,
+          "f1": 0.0539878578203337
+        },
+        "0.25": {
+          "precision": 0.07974126216230908,
+          "recall": 0.6585,
+          "f1": 0.14225599089403326
+        },
+        "0.5": {
+          "precision": 0.20448986247757786,
+          "recall": 0.989,
+          "f1": 0.33890606087007963
+        }
+      },
+      "n_nearby_place_points": 18397,
+      "obj_center": [
+        0.17033605470177962,
+        3.2680940916846413,
+        -1.3623849124707603
+      ],
+      "obj_extents": [
+        0.8281056487579888,
+        0.5477571667624537,
+        0.25786357399340204
+      ]
+    },
+    {
+      "task": "move hats",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.10826771653543307,
+          "recall": 0.6835,
+          "f1": 0.18692599535575236
+        },
+        "0.25": {
+          "precision": 0.26535433070866143,
+          "recall": 0.9965,
+          "f1": 0.41910636452415057
+        },
+        "0.5": {
+          "precision": 0.5484251968503937,
+          "recall": 1.0,
+          "f1": 0.7083651156877702
+        }
+      },
+      "n_nearby_place_points": 2540,
+      "obj_center": [
+        0.3131991557668682,
+        3.5671061897575136,
+        -0.8221786492038019
+      ],
+      "obj_extents": [
+        0.34326041492260223,
+        0.2233432640844656,
+        0.0787766480446454
+      ]
+    },
+    {
+      "task": "clean backpacks",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.0337160751565762,
+          "recall": 0.3005,
+          "f1": 0.06062952286064982
+        },
+        "0.25": {
+          "precision": 0.09102296450939457,
+          "recall": 0.9245,
+          "f1": 0.16572885819394348
+        },
+        "0.5": {
+          "precision": 0.1812108559498956,
+          "recall": 1.0,
+          "f1": 0.3068221986567692
+        }
+      },
+      "n_nearby_place_points": 9580,
+      "obj_center": [
+        0.747477029414996,
+        2.564954998241361,
+        -0.8219577936657565
+      ],
+      "obj_extents": [
+        0.6113876586261502,
+        0.5875529829032795,
+        0.21056605150211424
+      ]
+    },
+    {
+      "task": "get red crockery",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.04963910345700899,
+          "recall": 0.621,
+          "f1": 0.09192987133586869
+        },
+        "0.25": {
+          "precision": 0.15575535013296188,
+          "recall": 1.0,
+          "f1": 0.2695299660348417
+        },
+        "0.5": {
+          "precision": 0.41078890717994176,
+          "recall": 1.0,
+          "f1": 0.5823534691679383
+        }
+      },
+      "n_nearby_place_points": 7897,
+      "obj_center": [
+        -0.874123130787671,
+        3.9219461206582498,
+        -0.8414126303669812
+      ],
+      "obj_extents": [
+        0.46705756321292924,
+        0.2659120868358903,
+        0.09350628865299218
+      ]
+    },
+    {
+      "task": "get hardware drill",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.026101141924959218,
+          "recall": 0.543,
+          "f1": 0.0498080886547287
+        },
+        "0.25": {
+          "precision": 0.11838732230249359,
+          "recall": 1.0,
+          "f1": 0.2117107730777245
+        },
+        "0.5": {
+          "precision": 0.3773013283616872,
+          "recall": 1.0,
+          "f1": 0.5478849407783417
+        }
+      },
+      "n_nearby_place_points": 4291,
+      "obj_center": [
+        -0.8580410812534527,
+        3.5750988519388596,
+        -0.8339461290859806
+      ],
+      "obj_extents": [
+        0.1955148288826011,
+        0.17017716816983683,
+        0.04380716348209867
+      ]
+    },
+    {
+      "task": "get quartz rock",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.05807814149947202,
+          "recall": 0.9015,
+          "f1": 0.10912596337377665
+        },
+        "0.25": {
+          "precision": 0.1341077085533263,
+          "recall": 1.0,
+          "f1": 0.23649906890130357
+        },
+        "0.5": {
+          "precision": 0.3484688489968321,
+          "recall": 1.0,
+          "f1": 0.5168363351605325
+        }
+      },
+      "n_nearby_place_points": 947,
+      "obj_center": [
+        -0.9110343694858437,
+        0.09395636032468535,
+        -0.6435135525236098
+      ],
+      "obj_extents": [
+        0.10399979463758179,
+        0.07961628990204207,
+        0.0390736970011049
+      ]
+    },
+    {
+      "task": "get tape measure",
+      "thresholds": {
+        "0.1": {
+          "precision": 0.006239081607187422,
+          "recall": 0.405,
+          "f1": 0.01228885173576238
+        },
+        "0.25": {
+          "precision": 0.04442226104317445,
+          "recall": 1.0,
+          "f1": 0.0850657108721625
+        },
+        "0.5": {
+          "precision": 0.19765410531569752,
+          "recall": 1.0,
+          "f1": 0.3300687643259012
+        }
+      },
+      "n_nearby_place_points": 4007,
+      "obj_center": [
+        -0.7209383977290797,
+        3.607208660930386,
+        -0.8285188312745441
+      ],
+      "obj_extents": [
+        0.09068901856856122,
+        0.08115881532503386,
+        0.058136562067905156
+      ]
+    }
+  ],
+  "object_point_coverage": [
+    {
+      "task": "get condiment packets",
+      "precision": 0.0007704160246533128,
+      "recall": 0.65,
+      "total_place_points": 5192,
+      "points_in_bbox": 4
+    },
+    {
+      "task": "get drink cans",
+      "precision": 0.0015125732652675364,
+      "recall": 0.628,
+      "total_place_points": 10578,
+      "points_in_bbox": 16
+    },
+    {
+      "task": "get eyeglasses",
+      "precision": 0.0,
+      "recall": 0.264,
+      "total_place_points": 5192,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get glasses case",
+      "precision": 0.0,
+      "recall": 0.233,
+      "total_place_points": 5192,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get grey jacket",
+      "precision": 0.003852080123266564,
+      "recall": 0.1015,
+      "total_place_points": 5192,
+      "points_in_bbox": 20
+    },
+    {
+      "task": "get my silver water bottle",
+      "precision": 0.0,
+      "recall": 0.4385,
+      "total_place_points": 10578,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get notebooks",
+      "precision": 0.0016071090943467574,
+      "recall": 0.313,
+      "total_place_points": 10578,
+      "points_in_bbox": 17
+    },
+    {
+      "task": "get mudstone rock",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "tool to cut paper",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get sticky notes",
+      "precision": 0.0,
+      "recall": 0.485,
+      "total_place_points": 5192,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get textbooks",
+      "precision": 0.023279875840662184,
+      "recall": 0.6615,
+      "total_place_points": 11598,
+      "points_in_bbox": 270
+    },
+    {
+      "task": "get waste bins",
+      "precision": 0.019951778179626282,
+      "recall": 0.2315,
+      "total_place_points": 16590,
+      "points_in_bbox": 331
+    },
+    {
+      "task": "move hats",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "clean backpacks",
+      "precision": 0.0635395874916833,
+      "recall": 0.4285,
+      "total_place_points": 6012,
+      "points_in_bbox": 382
+    },
+    {
+      "task": "get red crockery",
+      "precision": 0.010020797882397429,
+      "recall": 0.61,
+      "total_place_points": 10578,
+      "points_in_bbox": 106
+    },
+    {
+      "task": "get hardware drill",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get quartz rock",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    },
+    {
+      "task": "get tape measure",
+      "precision": 0.0,
+      "recall": 0.0,
+      "total_place_points": 0,
+      "points_in_bbox": 0
+    }
+  ],
   "object_3d_iou": [
     {
       "task": "get condiment packets",
@@ -860,642 +1957,6 @@
         0.08115881532503386,
         0.058136562067905156
       ]
-    }
-  ],
-  "object_2d_iou_multiple": [
-    {
-      "task": "get condiment packets",
-      "obj_center": [
-        -0.8281684432464107,
-        1.618708027981676,
-        -0.7565765940807966
-      ],
-      "obj_extents": [
-        0.27291324120111904,
-        0.18658585861560337,
-        0.012436096664508779
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get drink cans",
-      "obj_center": [
-        -0.4130548447098006,
-        4.026933967079562,
-        -0.8288092174959546
-      ],
-      "obj_extents": [
-        0.14058790894177423,
-        0.15402738189677453,
-        0.0899725698630996
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get eyeglasses",
-      "obj_center": [
-        -0.8269663624176518,
-        1.2614906997982591,
-        -0.6972705595853275
-      ],
-      "obj_extents": [
-        0.0971707706519306,
-        0.03114523848256618,
-        0.01932181792723863
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get glasses case",
-      "obj_center": [
-        -0.8235050791926535,
-        1.2693207173989278,
-        -0.7186256385288012
-      ],
-      "obj_extents": [
-        0.14304484717131838,
-        0.03749586186111527,
-        0.015573770390424213
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get grey jacket",
-      "obj_center": [
-        -0.015205242423478815,
-        0.7188779042716769,
-        -0.7064747787465553
-      ],
-      "obj_extents": [
-        0.7180948489311085,
-        0.2573142345864649,
-        0.14747744239790833
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get my silver water bottle",
-      "obj_center": [
-        -0.5229224565553222,
-        4.0130828846435636,
-        -0.7692620230874511
-      ],
-      "obj_extents": [
-        0.22750499201736007,
-        0.048001063355423895,
-        0.04349519156009585
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get notebooks",
-      "obj_center": [
-        -0.2557681768757725,
-        3.704339132545685,
-        -0.8591575595873026
-      ],
-      "obj_extents": [
-        0.6554568592737819,
-        0.3445382793603862,
-        0.03239179693053502
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get mudstone rock",
-      "obj_center": [
-        -1.0005807348833125,
-        0.10824713730135205,
-        -0.6320028777098392
-      ],
-      "obj_extents": [
-        0.12843435306064885,
-        0.07444383574317419,
-        0.05603210110366533
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "tool to cut paper",
-      "obj_center": [
-        -0.7682798967878719,
-        2.8568822267764427,
-        -0.8081207463481744
-      ],
-      "obj_extents": [
-        0.3014778333104136,
-        0.12788320770015332,
-        0.02778094244513876
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get sticky notes",
-      "obj_center": [
-        -1.217614641369694,
-        1.3247901012197145,
-        -0.6464504823167732
-      ],
-      "obj_extents": [
-        0.17929858729368622,
-        0.17851927411012494,
-        0.01491346081969745
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get textbooks",
-      "obj_center": [
-        -1.035705267707465,
-        2.077850465037188,
-        -0.7281000283877901
-      ],
-      "obj_extents": [
-        0.6029353949826711,
-        0.4127090102411313,
-        0.08129864593367786
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get waste bins",
-      "obj_center": [
-        0.17033605470177962,
-        3.2680940916846413,
-        -1.3623849124707603
-      ],
-      "obj_extents": [
-        0.8281056487579888,
-        0.5477571667624537,
-        0.25786357399340204
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "move hats",
-      "obj_center": [
-        0.3131991557668682,
-        3.5671061897575136,
-        -0.8221786492038019
-      ],
-      "obj_extents": [
-        0.34326041492260223,
-        0.2233432640844656,
-        0.0787766480446454
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "clean backpacks",
-      "obj_center": [
-        0.747477029414996,
-        2.564954998241361,
-        -0.8219577936657565
-      ],
-      "obj_extents": [
-        0.6113876586261502,
-        0.5875529829032795,
-        0.21056605150211424
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get red crockery",
-      "obj_center": [
-        -0.874123130787671,
-        3.9219461206582498,
-        -0.8414126303669812
-      ],
-      "obj_extents": [
-        0.46705756321292924,
-        0.2659120868358903,
-        0.09350628865299218
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get hardware drill",
-      "obj_center": [
-        -0.8580410812534527,
-        3.5750988519388596,
-        -0.8339461290859806
-      ],
-      "obj_extents": [
-        0.1955148288826011,
-        0.17017716816983683,
-        0.04380716348209867
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get quartz rock",
-      "obj_center": [
-        -0.9110343694858437,
-        0.09395636032468535,
-        -0.6435135525236098
-      ],
-      "obj_extents": [
-        0.10399979463758179,
-        0.07961628990204207,
-        0.0390736970011049
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    },
-    {
-      "task": "get tape measure",
-      "obj_center": [
-        -0.7209383977290797,
-        3.607208660930386,
-        -0.8285188312745441
-      ],
-      "obj_extents": [
-        0.09068901856856122,
-        0.08115881532503386,
-        0.058136562067905156
-      ],
-      "dominant_plane": "xy",
-      "iou_xy": 0.0,
-      "iou_xz": 0.0,
-      "iou_yz": 0.0,
-      "iou_best": 0.0
-    }
-  ],
-  "object_chamfer_distance": [
-    {
-      "task": "get condiment packets",
-      "chamfer": 1.0320898293311103,
-      "place_to_gt_mean": 0.08898582574246788,
-      "gt_to_place_mean": 0.9431040035886424,
-      "place_to_gt_max": 0.2255526935348168,
-      "gt_to_place_max": 1.4580771133157602,
-      "n_place_points": 6249,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get drink cans",
-      "chamfer": 0.9214833031906347,
-      "place_to_gt_mean": 0.09979350630206586,
-      "gt_to_place_mean": 0.8216897968885688,
-      "place_to_gt_max": 0.23606196259531442,
-      "gt_to_place_max": 1.3849774501169834,
-      "n_place_points": 7706,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get eyeglasses",
-      "chamfer": 1.1538545475755857,
-      "place_to_gt_mean": 0.12606332961470637,
-      "gt_to_place_mean": 1.0277912179608792,
-      "place_to_gt_max": 0.19162163411641034,
-      "gt_to_place_max": 1.4590826135794541,
-      "n_place_points": 4869,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get glasses case",
-      "chamfer": 1.1325871666049925,
-      "place_to_gt_mean": 0.12907580614859576,
-      "gt_to_place_mean": 1.0035113604563968,
-      "place_to_gt_max": 0.18665138383316007,
-      "gt_to_place_max": 1.4604806021636383,
-      "n_place_points": 4926,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get grey jacket",
-      "chamfer": 1.08357497469433,
-      "place_to_gt_mean": 0.25448569854276043,
-      "gt_to_place_mean": 0.8290892761515696,
-      "place_to_gt_max": 0.5955826884938663,
-      "gt_to_place_max": 1.4034755957509923,
-      "n_place_points": 2164,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get my silver water bottle",
-      "chamfer": 1.0312494032633586,
-      "place_to_gt_mean": 0.12521326507528593,
-      "gt_to_place_mean": 0.9060361381880726,
-      "place_to_gt_max": 0.27182597599385583,
-      "gt_to_place_max": 1.4476899066186908,
-      "n_place_points": 8214,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get notebooks",
-      "chamfer": 0.703210529729415,
-      "place_to_gt_mean": 0.12179018623117763,
-      "gt_to_place_mean": 0.5814203434982373,
-      "place_to_gt_max": 0.31650504807247676,
-      "gt_to_place_max": 1.326397873450955,
-      "n_place_points": 7976,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get mudstone rock",
-      "chamfer": 0.8824875574563863,
-      "place_to_gt_mean": 0.0616808888748397,
-      "gt_to_place_mean": 0.8208066685815466,
-      "place_to_gt_max": 0.13904598161988038,
-      "gt_to_place_max": 1.4142839850398918,
-      "n_place_points": 1828,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "tool to cut paper",
-      "chamfer": 0.9864193600365151,
-      "place_to_gt_mean": 0.10831080628408926,
-      "gt_to_place_mean": 0.8781085537524258,
-      "place_to_gt_max": 0.3040197297844594,
-      "gt_to_place_max": 1.459070729676725,
-      "n_place_points": 9101,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get sticky notes",
-      "chamfer": 0.9552546427134921,
-      "place_to_gt_mean": 0.10124975221220234,
-      "gt_to_place_mean": 0.8540048905012898,
-      "place_to_gt_max": 0.1796589574618345,
-      "gt_to_place_max": 1.4217380661681762,
-      "n_place_points": 4973,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get textbooks",
-      "chamfer": 0.7675275763055158,
-      "place_to_gt_mean": 0.10755067960837104,
-      "gt_to_place_mean": 0.6599768966971448,
-      "place_to_gt_max": 0.3915838968234214,
-      "gt_to_place_max": 1.4168460026665848,
-      "n_place_points": 7404,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get waste bins",
-      "chamfer": 0.9301276243076336,
-      "place_to_gt_mean": 0.20995520896561928,
-      "gt_to_place_mean": 0.7201724153420144,
-      "place_to_gt_max": 0.530197403767939,
-      "gt_to_place_max": 1.7791477263747246,
-      "n_place_points": 12290,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "move hats",
-      "chamfer": 0.7973989512646107,
-      "place_to_gt_mean": 0.08583549905447342,
-      "gt_to_place_mean": 0.7115634522101373,
-      "place_to_gt_max": 0.26082120007754517,
-      "gt_to_place_max": 1.3657398464198514,
-      "n_place_points": 5663,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "clean backpacks",
-      "chamfer": 0.7442864227658681,
-      "place_to_gt_mean": 0.14435768489908954,
-      "gt_to_place_mean": 0.5999287378667786,
-      "place_to_gt_max": 0.4531051922084997,
-      "gt_to_place_max": 1.256530139709885,
-      "n_place_points": 4290,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get red crockery",
-      "chamfer": 0.6902681621801875,
-      "place_to_gt_mean": 0.09042129282567142,
-      "gt_to_place_mean": 0.599846869354516,
-      "place_to_gt_max": 0.24325384916155787,
-      "gt_to_place_max": 1.2668923418269524,
-      "n_place_points": 8940,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get hardware drill",
-      "chamfer": 0.916798807211493,
-      "place_to_gt_mean": 0.09510363349159659,
-      "gt_to_place_mean": 0.8216951737198964,
-      "place_to_gt_max": 0.19611451681360578,
-      "gt_to_place_max": 1.4299498563331678,
-      "n_place_points": 9960,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get quartz rock",
-      "chamfer": 0.8919071708890743,
-      "place_to_gt_mean": 0.05809046540893041,
-      "gt_to_place_mean": 0.833816705480144,
-      "place_to_gt_max": 0.1347810281703001,
-      "gt_to_place_max": 1.390130351332177,
-      "n_place_points": 1781,
-      "n_gt_surface_samples": 1000
-    },
-    {
-      "task": "get tape measure",
-      "chamfer": 1.0473730138092816,
-      "place_to_gt_mean": 0.10781662868719272,
-      "gt_to_place_mean": 0.9395563851220888,
-      "place_to_gt_max": 0.1962242711676171,
-      "gt_to_place_max": 1.4331462342464647,
-      "n_place_points": 9832,
-      "n_gt_surface_samples": 1000
-    }
-  ],
-  "object_point_coverage": [
-    {
-      "task": "get condiment packets",
-      "precision": 0.0007704160246533128,
-      "recall": 0.65,
-      "total_place_points": 5192,
-      "points_in_bbox": 4
-    },
-    {
-      "task": "get drink cans",
-      "precision": 0.0015125732652675364,
-      "recall": 0.628,
-      "total_place_points": 10578,
-      "points_in_bbox": 16
-    },
-    {
-      "task": "get eyeglasses",
-      "precision": 0.0,
-      "recall": 0.264,
-      "total_place_points": 5192,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get glasses case",
-      "precision": 0.0,
-      "recall": 0.233,
-      "total_place_points": 5192,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get grey jacket",
-      "precision": 0.003852080123266564,
-      "recall": 0.1015,
-      "total_place_points": 5192,
-      "points_in_bbox": 20
-    },
-    {
-      "task": "get my silver water bottle",
-      "precision": 0.0,
-      "recall": 0.4385,
-      "total_place_points": 10578,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get notebooks",
-      "precision": 0.0016071090943467574,
-      "recall": 0.313,
-      "total_place_points": 10578,
-      "points_in_bbox": 17
-    },
-    {
-      "task": "get mudstone rock",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "tool to cut paper",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get sticky notes",
-      "precision": 0.0,
-      "recall": 0.485,
-      "total_place_points": 5192,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get textbooks",
-      "precision": 0.023279875840662184,
-      "recall": 0.6615,
-      "total_place_points": 11598,
-      "points_in_bbox": 270
-    },
-    {
-      "task": "get waste bins",
-      "precision": 0.019951778179626282,
-      "recall": 0.2315,
-      "total_place_points": 16590,
-      "points_in_bbox": 331
-    },
-    {
-      "task": "move hats",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "clean backpacks",
-      "precision": 0.0635395874916833,
-      "recall": 0.4285,
-      "total_place_points": 6012,
-      "points_in_bbox": 382
-    },
-    {
-      "task": "get red crockery",
-      "precision": 0.010020797882397429,
-      "recall": 0.61,
-      "total_place_points": 10578,
-      "points_in_bbox": 106
-    },
-    {
-      "task": "get hardware drill",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get quartz rock",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
-    },
-    {
-      "task": "get tape measure",
-      "precision": 0.0,
-      "recall": 0.0,
-      "total_place_points": 0,
-      "points_in_bbox": 0
     }
   ]
 }

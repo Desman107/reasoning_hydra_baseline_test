@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Enhanced Clio DSG evaluation with 3D IoU and multi-plane metrics.
+"""Surface-aware Clio DSG evaluation — designed for 2D Place nodes.
 
-Evaluates DSG scene graph output against Clio ground-truth annotations:
-  1. Room assignment accuracy
-  2. Task object proximity (distance-based)
-  3. 3D IoU: place OBB vs GT bbox (Monte Carlo sampling)
-  4. Multi-plane 2D IoU: XY, XZ, YZ projections
-  5. Point-in-bbox precision/recall
-  6. Room centroid coverage
+Key insight: DSG Place nodes (layer 20, Place2dNodeAttributes) are 2D surface
+patches on room surfaces (walls, floors, ceilings). They are NOT 3D object nodes.
+Evaluation metrics are chosen accordingly:
+
+  1. Surface Coverage (Precision/Recall/F1) — primary object metric
+  2. Chamfer Distance — place mesh <-> GT bbox surface
+  3. Object Proximity — distance from GT center to nearest place
+  4. Room Assignment (with unannotated region filtering)
+  5. Room 3D IoU — valid for rooms (large volumes vs surface OBB)
+  6. Place Surface Type Classification — wall/floor/ceiling/other
+  7. 3D IoU — kept with caveat (expected ~0 for 2D surfaces)
 
 Usage:
     python3 eval_m/eval_clio_v2.py --dsg /tmp/clio_output/<scene>/dsg.json \\
@@ -925,17 +929,275 @@ def compute_place_statistics(places, mesh_pts):
 
 
 # ---------------------------------------------------------------------------
+# NEW: Place surface normal classification
+# ---------------------------------------------------------------------------
+
+def classify_places_by_normal(places):
+    """Classify each place by its dominant surface normal direction.
+
+    Uses PCA on mesh points to determine the surface normal (smallest
+    principal component). Classifies as: wall, floor, ceiling, other.
+
+    Returns:
+        list of dicts with place_id, normal, type, normal_vec
+    """
+    results = []
+    for place in places:
+        pts = place.get("mesh_points")
+        if pts is None or len(pts) < 3:
+            results.append({
+                "place_id": place["id"],
+                "type": "unknown",
+                "normal": [0, 0, 0],
+                "confidence": 0.0,
+            })
+            continue
+
+        pts = np.asarray(pts, dtype=np.float64)
+        centered = pts - pts.mean(axis=0)
+        cov = np.cov(centered.T)
+        eigenvalues, eigenvectors = np.linalg.eigh(cov)
+        # Smallest eigenvalue -> normal direction
+        normal = eigenvectors[:, 0]
+        # Ensure normal points "outward" (positive z for floor, etc.)
+        if normal[2] < 0:
+            normal = -normal
+
+        abs_normal = np.abs(normal)
+        dominant = np.argmax(abs_normal)
+        ratio = abs_normal[dominant] / (abs_normal.sum() + 1e-10)
+
+        if dominant == 2 and ratio > 0.7:
+            if normal[2] > 0:
+                ptype = "floor"
+            else:
+                ptype = "ceiling"
+        elif dominant in (0, 1) and ratio > 0.5:
+            ptype = "wall"
+        else:
+            ptype = "other"
+
+        results.append({
+            "place_id": place["id"],
+            "type": ptype,
+            "normal": normal.tolist(),
+            "normal_dominant_ratio": float(ratio),
+            "position": place["position"].tolist(),
+        })
+
+    # Summary
+    from collections import Counter
+    type_counts = Counter(r["type"] for r in results)
+    print(f"\n=== Place Surface Type Classification ===")
+    for t in ["wall", "floor", "ceiling", "other", "unknown"]:
+        c = type_counts.get(t, 0)
+        print(f"  {t}: {c}/{len(results)} ({100*c/len(results):.1f}%)" if results else f"  {t}: 0")
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# NEW: Surface Coverage metrics (replaces 3D IoU for 2D surfaces)
+# ---------------------------------------------------------------------------
+
+def evaluate_surface_coverage(places, gt_objects, distance_thresholds=(0.1, 0.25, 0.5)):
+    """Surface-based coverage: how well do place mesh points cover GT bbox surfaces?
+
+    For each GT object:
+      1. Sample points on GT bbox surface (6 faces)
+      2. For each sample, find distance to nearest place mesh point
+      3. Compute:
+         - Surface Precision: fraction of place points within threshold of GT surface
+         - Surface Recall: fraction of GT surface samples within threshold of any place
+         - Surface F1: harmonic mean of precision and recall
+
+    This replaces 3D IoU which is mathematically invalid for 2D surface places.
+    """
+    if not places:
+        return []
+
+    # Build global KD tree of all place mesh points
+    all_pts_list = []
+    place_pt_ranges = []  # (start_idx, end_idx) for each place
+    for place in places:
+        pts = place.get("mesh_points")
+        if pts is not None and len(pts) > 0:
+            start = len(all_pts_list)
+            all_pts_list.append(np.asarray(pts, dtype=np.float64))
+            end = start + len(pts)
+            place_pt_ranges.append((start, end, place["id"]))
+        else:
+            place_pt_ranges.append((0, 0, place["id"]))
+
+    results = []
+    for obj in gt_objects:
+        # Sample GT bbox surface
+        gt_surface = _sample_bbox_surface(
+            obj["center"], obj["extents"], obj["R"], n_samples=2000, seed=42)
+
+        # Find nearby place mesh points (within 2x bbox diagonal)
+        diag = 2.5 * np.linalg.norm(obj["extents"])
+        diag = max(diag, 1.0)
+
+        nearby_pt_list = []
+        for place in places:
+            pts = place.get("mesh_points")
+            if pts is None or len(pts) == 0:
+                continue
+            pts = np.asarray(pts, dtype=np.float64)
+            dists = np.linalg.norm(pts - obj["center"], axis=1)
+            nearby = pts[dists < diag]
+            if len(nearby) > 0:
+                nearby_pt_list.append(nearby)
+
+        if not nearby_pt_list:
+            results.append({
+                "task": obj["task"],
+                "thresholds": {str(t): {"precision": 0.0, "recall": 0.0, "f1": 0.0}
+                              for t in distance_thresholds},
+                "n_nearby_place_points": 0,
+            })
+            continue
+
+        nearby_pts = np.vstack(nearby_pt_list)
+        place_tree = cKDTree(nearby_pts)
+        gt_tree = cKDTree(gt_surface)
+
+        threshold_results = {}
+        for thresh in distance_thresholds:
+            # Precision: fraction of place points within 'thresh' of GT surface
+            p_dists, _ = gt_tree.query(nearby_pts, k=1)
+            precision = float(np.mean(p_dists < thresh))
+
+            # Recall: fraction of GT surface samples within 'thresh' of place points
+            g_dists, _ = place_tree.query(gt_surface, k=1)
+            recall = float(np.mean(g_dists < thresh))
+
+            f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+
+            threshold_results[str(thresh)] = {
+                "precision": float(precision),
+                "recall": float(recall),
+                "f1": float(f1),
+            }
+
+        results.append({
+            "task": obj["task"],
+            "thresholds": threshold_results,
+            "n_nearby_place_points": len(nearby_pts),
+            "obj_center": obj["center"].tolist(),
+            "obj_extents": obj["extents"].tolist(),
+        })
+
+    # Print summary
+    for thresh in distance_thresholds:
+        precs = [r["thresholds"][str(thresh)]["precision"] for r in results]
+        recalls = [r["thresholds"][str(thresh)]["recall"] for r in results]
+        f1s = [r["thresholds"][str(thresh)]["f1"] for r in results]
+        print(f"\n=== Surface Coverage @ {thresh}m ===")
+        print(f"  Precision: mean={np.mean(precs):.4f}, median={np.median(precs):.4f}")
+        print(f"  Recall:    mean={np.mean(recalls):.4f}, median={np.median(recalls):.4f}")
+        print(f"  F1:        mean={np.mean(f1s):.4f}, median={np.median(f1s):.4f}")
+        nz = sum(1 for f in f1s if f > 0)
+        print(f"  F1 > 0:    {nz}/{len(f1s)}")
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# NEW: Room assignment with distance-based filter for unannotated regions
+# ---------------------------------------------------------------------------
+
+def evaluate_room_assignment_filtered(places, gt_rooms,
+                                       filter_unassigned=True,
+                                       max_room_dist=3.0):
+    """Room assignment with optional filtering of unannotated regions.
+
+    When filter_unassigned=True, unassigned places that are farther than
+    max_room_dist from any GT room centroid are classified as "unannotated"
+    (e.g., corridors, hallways) rather than "unassigned", giving a more
+    accurate picture of algorithm performance within annotated regions.
+
+    Returns:
+        assignments, unassigned, unannotated
+    """
+    assignments = defaultdict(list)
+    unassigned = []
+    unannotated = []
+
+    # Compute GT room centroids for distance check
+    room_centers = {}
+    for room_id, bboxes in gt_rooms.items():
+        centers = [bbox["center"] for bbox in bboxes]
+        room_centers[room_id] = centers
+
+    for i, place in enumerate(places):
+        pos = place["position"]
+        best_room = None
+        for room_id, bboxes in gt_rooms.items():
+            for bbox in bboxes:
+                if is_point_in_bbox(pos, bbox["corners"]):
+                    best_room = room_id
+                    break
+            if best_room is not None:
+                break
+
+        if best_room is not None:
+            assignments[best_room].append(i)
+        elif filter_unassigned:
+            # Check distance to nearest room center
+            min_dist = float("inf")
+            for centers in room_centers.values():
+                for c in centers:
+                    d = np.linalg.norm(pos - c)
+                    if d < min_dist:
+                        min_dist = d
+            if min_dist > max_room_dist:
+                unannotated.append(i)
+            else:
+                unassigned.append(i)
+        else:
+            unassigned.append(i)
+
+    total = len(places)
+    assigned = total - len(unassigned) - len(unannotated)
+
+    print(f"\n=== Room Assignment (filtered, max_room_dist={max_room_dist}m) ===")
+    print(f"Total places: {total}")
+    print(f"Assigned to rooms: {assigned} ({100*assigned/total:.1f}%)" if total else "N/A")
+    print(f"Unassigned (near rooms): {len(unassigned)} ({100*len(unassigned)/total:.1f}%)" if total else "N/A")
+    print(f"Unannotated (far from rooms): {len(unannotated)} ({100*len(unannotated)/total:.1f}%)" if total else "N/A")
+    print(f"Rooms covered: {len(assignments)}/{len(gt_rooms)}")
+
+    # Effective coverage (excluding unannotated)
+    effective_total = total - len(unannotated)
+    if effective_total > 0:
+        print(f"Effective room assignment (excl. unannotated): "
+              f"{assigned}/{effective_total} ({100*assigned/effective_total:.1f}%)")
+
+    for room_id in sorted(gt_rooms.keys()):
+        count = len(assignments.get(room_id, []))
+        flag = "" if count > 0 else " (MISSED)"
+        print(f"  Room {room_id}: {count} places{flag}")
+
+    return dict(assignments), unassigned, unannotated
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="Enhanced Clio DSG Evaluation with 3D IoU")
+    parser = argparse.ArgumentParser(
+        description="Enhanced Clio DSG Evaluation — surface-aware metrics for 2D place nodes")
     parser.add_argument("--dsg", required=True, help="Path to dsg.json")
     parser.add_argument("--rooms", default=None, help="Path to rooms_<scene>.yaml")
     parser.add_argument("--tasks", default=None, help="Path to tasks_<scene>.yaml")
     parser.add_argument("--output", default=None, help="Path to save evaluation results JSON")
     parser.add_argument("--mc_samples", type=int, default=50000,
                         help="Monte Carlo samples for 3D IoU (default: 50000)")
+    parser.add_argument("--max_room_dist", type=float, default=3.0,
+                        help="Max distance (m) for room unannotated filtering (default: 3.0)")
     args = parser.parse_args()
 
     dsg_data, places, objects, rooms, mesh_pts, mesh_faces = load_dsg(args.dsg)
@@ -949,24 +1211,42 @@ def main():
         "num_mesh_faces": len(mesh_faces),
     }
 
-    # Place statistics
+    # Place statistics & surface type classification
     results["place_stats"] = compute_place_statistics(places, mesh_pts)
+    results["place_surface_types"] = classify_places_by_normal(places)
 
     # ---- Room evaluation ----
     if args.rooms and Path(args.rooms).exists():
         gt_rooms = load_gt_rooms(args.rooms)
-        room_assignments, unassigned = evaluate_room_assignment(places, gt_rooms)
-        room_centroids = evaluate_room_centroid_distance(places, gt_rooms)
-        room_3d_iou = evaluate_3d_iou_rooms(places, gt_rooms, mesh_pts,
-                                            num_samples=args.mc_samples)
 
+        # Original room assignment
+        room_assignments_raw, unassigned_raw = evaluate_room_assignment(places, gt_rooms)
+        results["room_assignment_raw"] = {
+            "per_room": {str(k): len(v) for k, v in room_assignments_raw.items()},
+            "unassigned_count": len(unassigned_raw),
+            "rooms_covered": len(room_assignments_raw),
+            "total_rooms": len(gt_rooms),
+        }
+
+        # Filtered room assignment (separates unannotated regions)
+        room_assignments, unassigned, unannotated = evaluate_room_assignment_filtered(
+            places, gt_rooms, filter_unassigned=True,
+            max_room_dist=args.max_room_dist)
         results["room_assignment"] = {
             "per_room": {str(k): len(v) for k, v in room_assignments.items()},
             "unassigned_count": len(unassigned),
+            "unannotated_count": len(unannotated),
             "rooms_covered": len(room_assignments),
             "total_rooms": len(gt_rooms),
+            "effective_total": len(places) - len(unannotated),
+            "filter_distance_m": args.max_room_dist,
         }
+
+        room_centroids = evaluate_room_centroid_distance(places, gt_rooms)
         results["room_centroid_distances"] = room_centroids
+
+        room_3d_iou = evaluate_3d_iou_rooms(places, gt_rooms, mesh_pts,
+                                            num_samples=args.mc_samples)
         results["room_3d_iou"] = room_3d_iou
     else:
         print(f"Rooms file not found: {args.rooms}")
@@ -975,28 +1255,31 @@ def main():
     if args.tasks and Path(args.tasks).exists():
         gt_objects = load_gt_objects(args.tasks)
 
-        # Object proximity
+        # 1. Object proximity (distance-based)
         obj_distances, proximity_stats = evaluate_object_proximity(places, gt_objects)
         results["object_proximity"] = {
             "distances": obj_distances,
             "stats": proximity_stats,
         }
 
-        # 3D IoU (place OBB vs GT)
-        obj_3d_iou = evaluate_3d_iou_objects(places, gt_objects, mesh_pts,
-                                             num_samples=args.mc_samples)
-        results["object_3d_iou"] = obj_3d_iou
-
-        # Multi-plane 2D IoU
-        obj_2d_iou = evaluate_multiple_2d_iou(places, gt_objects)
-        results["object_2d_iou_multiple"] = obj_2d_iou
-
-        # Point-in-bbox precision/recall
+        # 2. Chamfer distance (place mesh <-> GT bbox surface)
         chamfer = evaluate_chamfer_distance(places, gt_objects)
         results["object_chamfer_distance"] = chamfer
 
+        # 3. Surface coverage (replaces 3D IoU for 2D surface places)
+        surface_cov = evaluate_surface_coverage(places, gt_objects)
+        results["object_surface_coverage"] = surface_cov
+
+        # 4. Point-in-bbox precision/recall (legacy)
         pt_coverage = evaluate_point_coverage(places, gt_objects)
         results["object_point_coverage"] = pt_coverage
+
+        # 5. 3D IoU (place OBB vs GT) — KEPT WITH CAVEAT
+        #    Note: expected to be very low because places are 2D surfaces,
+        #    their OBBs have near-zero volume along the surface normal.
+        obj_3d_iou = evaluate_3d_iou_objects(places, gt_objects, mesh_pts,
+                                             num_samples=args.mc_samples)
+        results["object_3d_iou"] = obj_3d_iou
     else:
         print(f"Tasks file not found: {args.tasks}")
 
@@ -1005,31 +1288,38 @@ def main():
     print(f"  Evaluation Summary: {Path(args.dsg).parent.name}")
     print(f"{'='*60}")
 
-    if "object_3d_iou" in results:
-        ious = [r["best_3d_iou"] for r in results["object_3d_iou"]]
-        nz = [i for i in ious if i > 0]
-        print(f"  3D IoU (obj):  >0={len(nz)}/{len(ious)}, "
-              f"max={max(ious):.4f}" if ious else "N/A")
+    if "object_proximity" in results:
+        stats = results["object_proximity"]["stats"]
+        if stats.get("max", 0) > 0:
+            print(f"  Obj Proximity:  mean={stats['mean']:.3f}m, "
+                  f"<1m={stats.get('lt_1m','N/A')}")
+
+    if "object_surface_coverage" in results:
+        f1s_025 = [r["thresholds"]["0.25"]["f1"] for r in results["object_surface_coverage"]]
+        print(f"  Surface F1@0.25m: mean={np.mean(f1s_025):.4f}, "
+              f">0={sum(1 for f in f1s_025 if f>0)}/{len(f1s_025)}")
+
+    if "object_chamfer_distance" in results:
+        chamfers = [r["chamfer"] for r in results["object_chamfer_distance"]
+                    if r["chamfer"] is not None]
+        if chamfers:
+            print(f"  Chamfer (m):    mean={np.mean(chamfers):.3f}")
+
+    if "room_assignment" in results:
+        ra = results["room_assignment"]
+        print(f"  Room Coverage:  {ra['rooms_covered']}/{ra['total_rooms']}")
+        if "unannotated_count" in ra:
+            print(f"  Unannotated:    {ra['unannotated_count']} places "
+                  f"(>{ra['filter_distance_m']}m from rooms)")
+            print(f"  Effective Cov:  {ra['rooms_covered']}/{ra['total_rooms']} rooms, "
+                  f"{ra['effective_total'] - ra['unassigned_count']}/{ra['effective_total']} "
+                  f"places assigned (excl. unannotated)")
 
     if "room_3d_iou" in results:
         ious = [r["best_3d_iou"] for r in results["room_3d_iou"]]
         nz = [i for i in ious if i > 0]
-        print(f"  3D IoU (room): >0={len(nz)}/{len(ious)}, "
+        print(f"  Room 3D IoU:    >0={len(nz)}/{len(ious)}, "
               f"max={max(ious):.4f}" if ious else "N/A")
-
-    for plane in ["xy", "xz", "yz"]:
-        key = f"iou_{plane}"
-        if "object_2d_iou_multiple" in results:
-            ious = [r[key] for r in results["object_2d_iou_multiple"]]
-            nz = [i for i in ious if i > 0]
-            print(f"  2D IoU ({plane}):  >0={len(nz)}/{len(ious)}, "
-                  f"mean={np.mean(nz):.4f}" if nz else f"  2D IoU ({plane}): all 0")
-
-    if "object_point_coverage" in results:
-        precs = [r["precision"] for r in results["object_point_coverage"]]
-        recalls = [r["recall"] for r in results["object_point_coverage"]]
-        print(f"  Point Precision: mean={np.mean(precs):.4f}")
-        print(f"  Point Recall:    mean={np.mean(recalls):.4f}")
 
     # Save
     if args.output:
